@@ -3,7 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34309.116
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JetStudyProject", "JetStudyProject\JetStudyProject.csproj", "{1EE871AF-30B8-4A7F-B737-809BE0499FC1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JetStudyProject", "JetStudyProject\JetStudyProject.csproj", "{1EE871AF-30B8-4A7F-B737-809BE0499FC1}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JetStudyProject.Core", "JetStudyProject.Core\JetStudyProject.Core.csproj", "{D3F9A54B-CD43-4B22-B5FE-A77D789802D5}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JetStudyProject.Infrastracture", "JeyStudyProject.Infrastracture\JetStudyProject.Infrastracture.csproj", "{7033315B-9181-4C1F-85D6-7C2491B79679}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JetStudyProject.Application", "JetStudyProject.Application\JetStudyProject.Application.csproj", "{AC5CFC67-DBD7-48A8-8E97-E60903384653}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +21,18 @@ Global
 		{1EE871AF-30B8-4A7F-B737-809BE0499FC1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1EE871AF-30B8-4A7F-B737-809BE0499FC1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1EE871AF-30B8-4A7F-B737-809BE0499FC1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D3F9A54B-CD43-4B22-B5FE-A77D789802D5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D3F9A54B-CD43-4B22-B5FE-A77D789802D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D3F9A54B-CD43-4B22-B5FE-A77D789802D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D3F9A54B-CD43-4B22-B5FE-A77D789802D5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7033315B-9181-4C1F-85D6-7C2491B79679}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7033315B-9181-4C1F-85D6-7C2491B79679}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7033315B-9181-4C1F-85D6-7C2491B79679}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7033315B-9181-4C1F-85D6-7C2491B79679}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AC5CFC67-DBD7-48A8-8E97-E60903384653}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AC5CFC67-DBD7-48A8-8E97-E60903384653}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AC5CFC67-DBD7-48A8-8E97-E60903384653}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AC5CFC67-DBD7-48A8-8E97-E60903384653}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
