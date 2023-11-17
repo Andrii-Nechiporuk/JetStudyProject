@@ -1,4 +1,5 @@
 ﻿using JetStudyProject.Core.Entities;
+using JetStudyProject.Infrastracture.Configurations;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -15,5 +16,19 @@ namespace JeyStudyProject.Infrastracture.Data
         {
             
         }
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+
+            new EventEntityTypeConfiguration().Configure(builder.Entity<Event>());
+        }
+
+        public DbSet<Event> Events { get; set; }
+        public DbSet<EventType> EventTypes { get; set; }
+        public DbSet<ListenCourse> ListenCourses { get; set; }
+        public DbSet<ReadCourse> ReadCourses { get; set; }
+        public DbSet<StatusForAdministrator> StatusForAdministrators { get; set; }
+        public DbSet<StatusForInstructor> StatusForInstructors { get; set; }
+        public DbSet<StatusForStudent> StatusForStudents { get; set; }
     }
 }
