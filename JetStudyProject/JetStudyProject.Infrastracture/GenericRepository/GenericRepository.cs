@@ -1,4 +1,6 @@
-﻿using JeyStudyProject.Infrastracture.Data;
+﻿using Ardalis.Specification.EntityFrameworkCore;
+using Ardalis.Specification;
+using JeyStudyProject.Infrastracture.Data;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -76,6 +78,22 @@ namespace JetStudyProject.Infrastracture.GenericRepository
         {
             _dbSet.Attach(obj);
             _ctx.Entry(obj).State = EntityState.Modified;
+        }
+
+        public IEnumerable<TEntity> GetListBySpec(ISpecification<TEntity> specification)
+        {
+            return ApplySpecification(specification).ToList();
+        }
+
+        public TEntity? GetFirstBySpec(ISpecification<TEntity> specification)
+        {
+            return ApplySpecification(specification).FirstOrDefault();
+        }
+
+        private IQueryable<TEntity> ApplySpecification(ISpecification<TEntity> specification)
+        {
+            var evaluator = new SpecificationEvaluator();
+            return evaluator.GetQuery(_dbSet, specification);
         }
     }
 }

@@ -1,6 +1,9 @@
 using JetStudyProject.Core.Entities;
+using JetStudyProject.Helpers;
 using JetStudyProject.Infrastracture.DataAccess;
 using JetStudyProject.Infrastracture.GenericRepository;
+using JetStudyProject.Infrastracture.Interfaces;
+using JetStudyProject.Infrastracture.Services;
 using JeyStudyProject.Infrastracture.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -35,7 +38,10 @@ builder.Services.AddAuthorization();
 builder.Services.AddIdentityApiEndpoints<User>()
     .AddEntityFrameworkStores<DataContext>();
 
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped<IEventService, EventService>();
 
 var app = builder.Build();
 

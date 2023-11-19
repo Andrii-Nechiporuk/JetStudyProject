@@ -7,12 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\JetStudyProject.Core\JetStudyProject.Core.csproj" />
+    <PackageReference Include="AutoMapper" Version="12.0.1" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="IServices\" />
-    <Folder Include="Services\" />
+    <ProjectReference Include="..\JetStudyProject.Core\JetStudyProject.Core.csproj" />
+    <ProjectReference Include="..\JetStudyProject.Infrastracture\JetStudyProject.Infrastracture.csproj" />
+    <ProjectReference Include="..\JetStudyProject\JetStudyProject.csproj" />
   </ItemGroup>
 
 </Project>

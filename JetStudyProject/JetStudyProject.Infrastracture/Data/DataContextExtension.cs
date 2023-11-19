@@ -44,6 +44,8 @@ namespace JetStudyProject.Infrastracture.Data
             var admin = new User
             {
                 Id = ADMIN_ID,
+                Name = "Андрій",
+                Surname = "Нечипорук",
                 UserName = "admin@gmail.com",
                 Email = "admin@gmail.com",
                 EmailConfirmed = true,
@@ -54,6 +56,8 @@ namespace JetStudyProject.Infrastracture.Data
             var instructor = new User
             {
                 Id = INSTRUCTOR_ID,
+                Name = "Максим",
+                Surname = "Матвійчук",
                 UserName = "instructor@gmail.com",
                 Email = "instructor@gmail.com",
                 EmailConfirmed = true,
@@ -64,6 +68,8 @@ namespace JetStudyProject.Infrastracture.Data
             var student = new User
             {
                 Id = STUDENT_ID,
+                Name = "Вадим",
+                Surname = "Верба",
                 UserName = "student@gmail.com",
                 Email = "student@gmail.com",
                 EmailConfirmed = true,
@@ -233,6 +239,26 @@ namespace JetStudyProject.Infrastracture.Data
                     StatusForInstructorId = 3,
                     StatusForStudentId = 3,
                     Thumbnail = "https://blogct.creative-tim.com/blog/content/images/2022/07/UX-design-courses.jpg"
+                });
+
+            builder.Entity<ReadCourse>().HasData(
+                new ReadCourse
+                {
+                    Id = 1,
+                    EventId = 1,
+                    UserId = INSTRUCTOR_ID
+                },
+                new ReadCourse
+                {
+                    Id = 2,
+                    EventId = 1,
+                    UserId = ADMIN_ID
+                },
+                new ReadCourse
+                {
+                    Id = 3,
+                    EventId = 2,
+                    UserId = ADMIN_ID
                 });
         }
     }

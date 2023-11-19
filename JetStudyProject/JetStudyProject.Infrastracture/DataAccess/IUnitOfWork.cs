@@ -11,6 +11,7 @@ namespace JetStudyProject.Infrastracture.DataAccess
     public interface IUnitOfWork
     {
         IGenericRepository<Event> EventRepository { get; }
+        IGenericRepository<ApplicationToEvent> ApplicationToEventRepository { get; }
         Task SaveAsync();
     }
 }

@@ -15,6 +15,7 @@ namespace JetStudyProject.Infrastracture.Configurations
         {
             builder.HasMany(x => x.Lecturers).WithOne(x => x.Event).HasForeignKey(x => x.EventId).OnDelete(DeleteBehavior.Restrict);
             builder.HasMany(x => x.Students).WithOne(x => x.Event).HasForeignKey(x => x.EventId).OnDelete(DeleteBehavior.Restrict);
+            builder.HasMany(x => x.ApplicationToEvents).WithOne(x => x.Event).HasForeignKey(x => x.EventId).OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

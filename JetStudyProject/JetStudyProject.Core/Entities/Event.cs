@@ -39,5 +39,6 @@ namespace JetStudyProject.Core.Entities
         public int StatusForStudentId { get; set; }
         public virtual ICollection<ReadCourse> Lecturers { get; set; }
         public virtual ICollection<ListenCourse> Students { get; set; }
+        public virtual ICollection<ApplicationToEvent> ApplicationToEvents { get; set; }
     }
 }
