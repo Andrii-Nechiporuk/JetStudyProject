@@ -1,4 +1,6 @@
 using JetStudyProject.Core.Entities;
+using JetStudyProject.Infrastracture.DataAccess;
+using JetStudyProject.Infrastracture.GenericRepository;
 using JeyStudyProject.Infrastracture.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -32,6 +34,8 @@ builder.Services.AddAuthorization();
 
 builder.Services.AddIdentityApiEndpoints<User>()
     .AddEntityFrameworkStores<DataContext>();
+
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 var app = builder.Build();
 
