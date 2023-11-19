@@ -24,7 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\JeyStudyProject.Infrastracture\JetStudyProject.Infrastracture.csproj" />
+    <ProjectReference Include="..\JetStudyProject.Infrastracture\JetStudyProject.Infrastracture.csproj" />
   </ItemGroup>
 
 </Project>

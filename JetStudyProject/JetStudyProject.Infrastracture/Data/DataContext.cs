@@ -1,5 +1,6 @@
 ﻿using JetStudyProject.Core.Entities;
 using JetStudyProject.Infrastracture.Configurations;
+using JetStudyProject.Infrastracture.Data;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -21,6 +22,8 @@ namespace JeyStudyProject.Infrastracture.Data
             base.OnModelCreating(builder);
 
             new EventEntityTypeConfiguration().Configure(builder.Entity<Event>());
+
+            builder.Seed();
         }
 
         public DbSet<Event> Events { get; set; }
