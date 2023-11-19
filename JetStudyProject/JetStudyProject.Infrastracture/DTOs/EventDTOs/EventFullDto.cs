@@ -27,6 +27,7 @@ namespace JetStudyProject.Infrastracture.DTOs.EventDTOs
         public UserDto? Creator { get; set; }
         public string? EventType { get; set; }
         public bool? WaitingForConfirmation { get; set; }
-        public List<UserDto>? Lectorers { get; set; }
+        public bool? IsAllowedToWatchAllContent { get; set; }
+        public List<UserDto>? Lecturers { get; set; }
     }
 }

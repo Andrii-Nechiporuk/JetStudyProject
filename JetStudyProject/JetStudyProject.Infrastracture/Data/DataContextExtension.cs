@@ -260,6 +260,22 @@ namespace JetStudyProject.Infrastracture.Data
                     EventId = 2,
                     UserId = ADMIN_ID
                 });
+
+            builder.Entity<ApplicationToEvent>().HasData(
+                new ApplicationToEvent
+                {
+                    Id = 1,
+                    EventId = 1,
+                    UserId = STUDENT_ID
+                }); 
+            
+            builder.Entity<ListenCourse>().HasData(
+                new ListenCourse
+                {
+                    Id = 1,
+                    EventId = 2,
+                    UserId = STUDENT_ID
+                });
         }
     }
 }

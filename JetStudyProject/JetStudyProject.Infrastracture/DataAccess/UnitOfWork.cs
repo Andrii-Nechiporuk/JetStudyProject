@@ -46,6 +46,20 @@ namespace JetStudyProject.Infrastracture.DataAccess
             }
         }
 
+        public IGenericRepository<ListenCourse> listenCourseRepository;
+
+        public IGenericRepository<ListenCourse> ListenCourseRepository
+        {
+            get
+            {
+                if (this.listenCourseRepository == null)
+                {
+                    this.listenCourseRepository = new GenericRepository<ListenCourse>(_ctx);
+                }
+                return listenCourseRepository;
+            }
+        }
+
         private bool disposed = false;
 
         protected virtual void Dispose(bool disposing)

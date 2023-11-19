@@ -17,7 +17,7 @@ namespace JetStudyProject.Helpers
 
             CreateMap<Event, EventFullDto>()
                 .ForMember(dest => dest.EventType, from => from.MapFrom(x => x.EventType.Title))
-                .ForMember(dest => dest.Lectorers, from => from.MapFrom(x => x.Lecturers.ToList()));
+                .ForMember(dest => dest.Lecturers, from => from.MapFrom(x => x.Lecturers.ToList()));
         }
     }
 }

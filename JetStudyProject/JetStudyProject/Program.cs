@@ -1,3 +1,4 @@
+using JetStudyProject;
 using JetStudyProject.Core.Entities;
 using JetStudyProject.Helpers;
 using JetStudyProject.Infrastracture.DataAccess;
@@ -41,6 +42,7 @@ builder.Services.AddIdentityApiEndpoints<User>()
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IEventService, EventService>();
 
 var app = builder.Build();
@@ -55,6 +57,8 @@ if (app.Environment.IsDevelopment())
 app.MapIdentityApi<User>();
 
 app.UseHttpsRedirection();
+
+app.UseMiddleware<ExceptionMiddleware>();
 
 app.UseAuthorization();
 
