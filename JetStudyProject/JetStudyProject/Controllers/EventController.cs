@@ -23,12 +23,18 @@ namespace JetStudyProject.Controllers
             _emailService = emailService;
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("authorized/{id}")]
         [Authorize]
-        public async Task<EventFullDto>? GetPost(int id)
+        public async Task<EventFullDto>? GetPostAuthorized(int id)
         {
             var userId = await _userService.GetUserId(User);
-            return await _eventService.GetPost(id, userId);
+            return await _eventService.GetPostAuthorized(id, userId);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<EventFullDto>? GetPost(int id)
+        {
+            return await _eventService.GetPost(id);
         }
 
         [HttpPost("send-email")]

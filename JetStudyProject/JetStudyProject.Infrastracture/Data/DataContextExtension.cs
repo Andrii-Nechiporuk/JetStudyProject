@@ -213,7 +213,7 @@ namespace JetStudyProject.Infrastracture.Data
                     StatusForAdministratorId = 1,
                     StatusForInstructorId = 2,
                     StatusForStudentId = 1,
-                    Thumbnail = "https://blogct.creative-tim.com/blog/content/images/2022/07/UX-design-courses.jpg"
+                    Thumbnail = "UX-design-courses.jpg"
                 },
                 new Event
                 {
@@ -238,7 +238,7 @@ namespace JetStudyProject.Infrastracture.Data
                     StatusForAdministratorId = 2,
                     StatusForInstructorId = 3,
                     StatusForStudentId = 3,
-                    Thumbnail = "https://blogct.creative-tim.com/blog/content/images/2022/07/UX-design-courses.jpg"
+                    Thumbnail = "UX-design-courses.jpg"
                 });
 
             builder.Entity<ReadCourse>().HasData(

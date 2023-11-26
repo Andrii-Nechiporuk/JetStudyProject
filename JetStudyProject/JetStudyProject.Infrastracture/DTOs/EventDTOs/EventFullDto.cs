@@ -12,6 +12,7 @@ namespace JetStudyProject.Infrastracture.DTOs.EventDTOs
         public int Id { get; set; }
         public string? Title { get; set; }
         public string? Thumbnail { get; set; }
+        public string? ImageSrc { get; set; }
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
         public TimeOnly StartTime { get; set; }

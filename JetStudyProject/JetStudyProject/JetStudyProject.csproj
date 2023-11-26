@@ -28,4 +28,8 @@
     <ProjectReference Include="..\JetStudyProject.Infrastracture\JetStudyProject.Infrastracture.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\Images\Events\" />
+  </ItemGroup>
+
 </Project>
