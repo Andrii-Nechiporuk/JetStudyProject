@@ -25,16 +25,22 @@ namespace JetStudyProject.Controllers
 
         [HttpGet("authorized/{id}")]
         [Authorize]
-        public async Task<EventFullDto>? GetPostAuthorized(int id)
+        public async Task<EventFullDto>? GetEventAuthorized(int id)
         {
             var userId = await _userService.GetUserId(User);
-            return await _eventService.GetPostAuthorized(id, userId);
+            return await _eventService.GetEventAuthorized(id, userId);
         }
 
         [HttpGet("{id}")]
-        public async Task<EventFullDto>? GetPost(int id)
+        public async Task<EventFullDto>? GetEvent(int id)
         {
-            return await _eventService.GetPost(id);
+            return await _eventService.GetEvent(id);
+        }
+
+        [HttpGet]
+        public List<EventPreviewDto> GetEventsPreviews()
+        {
+            return  _eventService.GetEventsPreviews();
         }
 
         [HttpPost("send-email")]

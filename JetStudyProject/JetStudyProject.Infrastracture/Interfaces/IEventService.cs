@@ -9,8 +9,8 @@ namespace JetStudyProject.Infrastracture.Interfaces
 {
     public interface IEventService
     {
-        List<EventPreviewDto> GetPostPreview();
-        Task<EventFullDto> GetPostAuthorized(int id, string userId);
-        Task<EventFullDto> GetPost(int id);
+        List<EventPreviewDto> GetEventsPreviews();
+        Task<EventFullDto> GetEventAuthorized(int id, string userId);
+        Task<EventFullDto> GetEvent(int id);
     }
 }

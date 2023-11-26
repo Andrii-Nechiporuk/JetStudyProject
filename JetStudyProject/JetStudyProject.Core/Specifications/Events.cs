@@ -24,5 +24,17 @@ namespace JetStudyProject.Core.Specifications
                     .Include(x => x.EventType);
             }
         }
+        public class WithUserAndEventAndLectorers : Specification<Event>
+        {
+            public WithUserAndEventAndLectorers()
+            {
+                Query
+                    .Include(x => x.Creator)
+                    .Include(x => x.Lecturers)
+                    .ThenInclude(x => x.User)
+                    .Include(x => x.ApplicationToEvents)
+                    .Include(x => x.EventType);
+            }
+        }
     }
 }

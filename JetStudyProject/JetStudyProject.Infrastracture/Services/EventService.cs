@@ -25,7 +25,7 @@ namespace JetStudyProject.Infrastracture.Services
             _mapper = mapper;
             _userManager = userManager;
         }
-        public async Task<EventFullDto> GetPostAuthorized(int id, string userId)
+        public async Task<EventFullDto> GetEventAuthorized(int id, string userId)
         {
             if (IsExist(id))
             {
@@ -47,7 +47,7 @@ namespace JetStudyProject.Infrastracture.Services
             else return new EventFullDto();
         }
 
-        public async Task<EventFullDto> GetPost(int id)
+        public async Task<EventFullDto> GetEvent(int id)
         {
             if (IsExist(id))
             {
@@ -59,9 +59,10 @@ namespace JetStudyProject.Infrastracture.Services
             else return new EventFullDto();
         }
 
-        public List<EventPreviewDto> GetPostPreview()
+        public List<EventPreviewDto> GetEventsPreviews()
         {
-            throw new NotImplementedException();
+            var events = _unitOfWork.EventRepository.GetListBySpec(new Events.WithUserAndEventAndLectorers());
+            return _mapper.Map<List<EventPreviewDto>>(events);
         }
 
         public bool IsExist(int id)
