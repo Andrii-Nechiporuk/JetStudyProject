@@ -2,6 +2,7 @@
 using JetStudyProject.Core.Entities;
 using JetStudyProject.Infrastracture.DTOs.CategoryDTOs;
 using JetStudyProject.Infrastracture.DTOs.EventDTOs;
+using JetStudyProject.Infrastracture.DTOs.EventTypeDTOs;
 using JetStudyProject.Infrastracture.DTOs.UserDTOs;
 using JetStudyProject.Infrastracture.Utilities;
 using Microsoft.AspNetCore.Hosting.Server;
@@ -31,6 +32,9 @@ namespace JetStudyProject.Helpers
 
             CreateMap<Category, CategoryDto>();
             CreateMap<CategoryDto, Category>();
+
+            CreateMap<EventType, EventTypeDto>();
+            CreateMap<EventTypeDto, EventType>();
         }
     }
 }

@@ -74,6 +74,20 @@ namespace JetStudyProject.Infrastracture.DataAccess
             }
         }
 
+        public IGenericRepository<EventType> eventTypeRepository;
+
+        public IGenericRepository<EventType> EventTypeRepository
+        {
+            get
+            {
+                if (this.eventTypeRepository == null)
+                {
+                    this.eventTypeRepository = new GenericRepository<EventType>(_ctx);
+                }
+                return eventTypeRepository;
+            }
+        }
+
         private bool disposed = false;
 
         protected virtual void Dispose(bool disposing)

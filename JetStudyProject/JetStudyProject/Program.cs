@@ -51,6 +51,7 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IEventService, EventService>();
 builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<IEventTypeService, EventTypeService>();
 
 builder.Services.AddSingleton(provider => new MapperConfiguration(cfg =>
 {

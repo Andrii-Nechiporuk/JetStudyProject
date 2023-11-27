@@ -6,6 +6,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace JetStudyProject.Controllers
 {
+    /// <summary>
+    /// Controller to manipulate categories of events
+    /// </summary>
     [Route("api/[controller]")]
     [ApiController]
     public class CategoryController : ControllerBase
