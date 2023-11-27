@@ -9,7 +9,9 @@ using JetStudyProject.Infrastracture.DTOs.EmailDTOs;
 using JetStudyProject.Infrastracture.Interfaces;
 using MailKit.Security;
 using Microsoft.Extensions.Configuration;
-using System.Net.Mail;
+using MimeKit.Text;
+using MimeKit;
+using MailKit.Net.Smtp;
 
 namespace JetStudyProject.Infrastracture.Services
 {
@@ -23,17 +25,20 @@ namespace JetStudyProject.Infrastracture.Services
 
         public Task SendEmailAsync(string email, string subject, string htmlMessage)
         {
-            SmtpClient client = new SmtpClient
-            {
-                Port = 587,
-                Host = _config.GetSection("EmailHost").Value, //or another email sender provider
-                EnableSsl = true,
-                DeliveryMethod = SmtpDeliveryMethod.Network,
-                UseDefaultCredentials = false,
-                Credentials = new NetworkCredential(_config.GetSection("EmailUsername").Value, _config.GetSection("EmailPassword").Value)
-            };
+            var emailToSend = new MimeMessage();
+            emailToSend.From.Add(MailboxAddress.Parse(_config.GetSection("EmailUsername").Value));
+            emailToSend.To.Add(MailboxAddress.Parse(email));
+            emailToSend.Subject = subject;
+            emailToSend.Body = new TextPart(TextFormat.Html) { Text = htmlMessage };
 
-            return client.SendMailAsync(_config.GetSection("EmailUsername").Value, email, subject, htmlMessage);
+            using (var smtp = new SmtpClient())  
+            {
+                smtp.Connect(_config.GetSection("EmailHost").Value, 587, SecureSocketOptions.StartTls);
+                smtp.Authenticate(_config.GetSection("EmailUsername").Value, _config.GetSection("EmailPassword").Value);
+                smtp.Send(emailToSend);
+                smtp.Disconnect(true);
+            }
+            return Task.FromResult(true);
         }
     }
 }
