@@ -9,6 +9,7 @@ using JetStudyProject.Infrastracture.Services;
 using JeyStudyProject.Infrastracture.Data;
 using Microsoft.AspNetCore.Hosting.Server;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.OpenApi.Models;
@@ -52,6 +53,7 @@ builder.Services.AddScoped<IEventService, EventService>();
 builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IEventTypeService, EventTypeService>();
+builder.Services.AddTransient<IEmailSender, EmailSender>();
 
 builder.Services.AddSingleton(provider => new MapperConfiguration(cfg =>
 {
