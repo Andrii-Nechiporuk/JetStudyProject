@@ -29,6 +29,8 @@ namespace JetStudyProject.Core.Entities
         public bool? IsOnline { get; set; }
         public User Creator { get; set; }
         public string CreatorId {  get; set; }
+        public Category? Category { get; set; }
+        public int CategoryId {  get; set; }
         public EventType? EventType { get; set; }
         public int EventTypeId { get; set; }
         public StatusForInstructor? StatusForInstructor { get; set; }

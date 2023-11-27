@@ -13,6 +13,7 @@ namespace JetStudyProject.Infrastracture.DataAccess
         IGenericRepository<Event> EventRepository { get; }
         IGenericRepository<ApplicationToEvent> ApplicationToEventRepository { get; }
         IGenericRepository<ListenCourse> ListenCourseRepository{ get; }
+        IGenericRepository<Category> CategoryRepository { get; }
         Task SaveAsync();
     }
 }

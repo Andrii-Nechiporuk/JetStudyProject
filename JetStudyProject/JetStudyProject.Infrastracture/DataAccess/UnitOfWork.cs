@@ -60,6 +60,20 @@ namespace JetStudyProject.Infrastracture.DataAccess
             }
         }
 
+        public IGenericRepository<Category> categoryRepository;
+
+        public IGenericRepository<Category> CategoryRepository
+        {
+            get
+            {
+                if (this.categoryRepository == null)
+                {
+                    this.categoryRepository = new GenericRepository<Category>(_ctx);
+                }
+                return categoryRepository;
+            }
+        }
+
         private bool disposed = false;
 
         protected virtual void Dispose(bool disposing)

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using JetStudyProject.Core.Entities;
+using JetStudyProject.Infrastracture.DTOs.CategoryDTOs;
 using JetStudyProject.Infrastracture.DTOs.EventDTOs;
 using JetStudyProject.Infrastracture.DTOs.UserDTOs;
 using JetStudyProject.Infrastracture.Utilities;
@@ -27,6 +28,9 @@ namespace JetStudyProject.Helpers
                 .ForMember(dest => dest.EventType, from => from.MapFrom(x => x.EventType.Title))
                 .ForMember(dest => dest.Lecturers, from => from.MapFrom(x => x.Lecturers.ToList()))
                 .ForMember(dest => dest.ImageSrc, from => from.MapFrom(x => Path.Combine(_server.Features.Get<IServerAddressesFeature>().Addresses.FirstOrDefault(), WebConstants.eventsImagesPath, x.Thumbnail)));
+
+            CreateMap<Category, CategoryDto>();
+            CreateMap<CategoryDto, Category>();
         }
     }
 }

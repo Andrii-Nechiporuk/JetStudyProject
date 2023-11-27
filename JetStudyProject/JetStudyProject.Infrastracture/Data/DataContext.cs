@@ -28,6 +28,7 @@ namespace JeyStudyProject.Infrastracture.Data
 
         public DbSet<Event> Events { get; set; }
         public DbSet<EventType> EventTypes { get; set; }
+        public DbSet<Category> Categories { get; set; }
         public DbSet<ListenCourse> ListenCourses { get; set; }
         public DbSet<ReadCourse> ReadCourses { get; set; }
         public DbSet<StatusForAdministrator> StatusForAdministrators { get; set; }

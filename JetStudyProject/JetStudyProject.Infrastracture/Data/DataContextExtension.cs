@@ -94,7 +94,7 @@ namespace JetStudyProject.Infrastracture.Data
                 {
                     RoleId = INSTRUCTOR_ROLE_ID,
                     UserId = INSTRUCTOR_ID
-                }, 
+                },
                 new IdentityUserRole<string>
                 {
                     RoleId = STUDENT_ROLE_ID,
@@ -110,17 +110,17 @@ namespace JetStudyProject.Infrastracture.Data
                 new EventType
                 {
                     Id = 1,
-                    Title = "Майстер клас"
+                    Title = "Webinar"
                 },
                 new EventType
                 {
                     Id = 2,
-                    Title = "Лекція"
+                    Title = "Course"
                 },
                 new EventType
                 {
                     Id = 3,
-                    Title = "Live coding"
+                    Title = "Tutorial"
                 });
 
             builder.Entity<StatusForAdministrator>().HasData(
@@ -139,7 +139,7 @@ namespace JetStudyProject.Infrastracture.Data
                     Id = 3,
                     Title = "Відхилено"
                 });
-            
+
             builder.Entity<StatusForInstructor>().HasData(
                 new StatusForInstructor
                 {
@@ -189,6 +189,28 @@ namespace JetStudyProject.Infrastracture.Data
                     Title = "Завершена"
                 });
 
+            builder.Entity<Category>().HasData(
+                new Category
+                {
+                    Id = 1,
+                    Title = "Software Development"
+                },
+                new Category
+                {
+                    Id = 2,
+                    Title = "Design"
+                },
+                new Category
+                {
+                    Id = 3,
+                    Title = "Marketing"
+                },
+                new Category
+                {
+                    Id = 4,
+                    Title = "Humanitarian"
+                });
+
             builder.Entity<Event>().HasData(
                 new Event
                 {
@@ -210,6 +232,7 @@ namespace JetStudyProject.Infrastracture.Data
                     IsOnline = false,
                     CreatorId = INSTRUCTOR_ID,
                     EventTypeId = 1,
+                    CategoryId = 2,
                     StatusForAdministratorId = 1,
                     StatusForInstructorId = 2,
                     StatusForStudentId = 1,
@@ -235,6 +258,7 @@ namespace JetStudyProject.Infrastracture.Data
                     IsOnline = false,
                     CreatorId = INSTRUCTOR_ID,
                     EventTypeId = 1,
+                    CategoryId = 2,
                     StatusForAdministratorId = 2,
                     StatusForInstructorId = 3,
                     StatusForStudentId = 3,
@@ -267,8 +291,8 @@ namespace JetStudyProject.Infrastracture.Data
                     Id = 1,
                     EventId = 1,
                     UserId = STUDENT_ID
-                }); 
-            
+                });
+
             builder.Entity<ListenCourse>().HasData(
                 new ListenCourse
                 {
