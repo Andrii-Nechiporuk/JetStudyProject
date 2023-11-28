@@ -4,12 +4,15 @@ using JetStudyProject.Core.Entities;
 using JetStudyProject.Core.Specifications;
 using JetStudyProject.Infrastracture.DataAccess;
 using JetStudyProject.Infrastracture.DTOs.EventDTOs;
+using JetStudyProject.Infrastracture.Exceptions;
 using JetStudyProject.Infrastracture.Interfaces;
+using JetStudyProject.Infrastracture.Resources;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -20,12 +23,14 @@ namespace JetStudyProject.Infrastracture.Services
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly UserManager<User> _userManager;
+        private readonly IEmailService _emailService;
 
-        public EventService(IUnitOfWork unitOfWork, IMapper mapper, UserManager<User> userManager)
+        public EventService(IUnitOfWork unitOfWork, IMapper mapper, UserManager<User> userManager, IEmailService emailService)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _userManager = userManager;
+            _emailService = emailService;
         }
         public async Task<EventFullDto> GetEventAuthorized(int id, string userId)
         {
@@ -33,7 +38,7 @@ namespace JetStudyProject.Infrastracture.Services
             {
                 var eventFromDb = _unitOfWork.EventRepository.GetFirstBySpec(new Events.ByEventIdWithUserAndEventAndLectorers(id));
                 var eventToSend = _mapper.Map<EventFullDto>(eventFromDb);
-                
+
                 var applicationToEvent = _unitOfWork.ApplicationToEventRepository.GetFirstBySpec(new ApplicationsToEvent.ByUserIdAndEventId(id, userId));
                 if (applicationToEvent != null)
                     eventToSend.WaitingForConfirmation = true;
@@ -105,6 +110,28 @@ namespace JetStudyProject.Infrastracture.Services
             }
 
             return _mapper.Map<List<EventPreviewDto>>(events);
+        }
+        public async Task SendRequest(string userId, int eventId)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            var foundedEvent = _unitOfWork.EventRepository.GetById(eventId);
+            var application = _unitOfWork.ApplicationToEventRepository.GetAll().FirstOrDefault(a => a.UserId == userId && a.EventId == eventId);
+            if (user != null && foundedEvent != null && application == null)
+            {
+                await _unitOfWork.ApplicationToEventRepository.Insert(new ApplicationToEvent()
+                {
+                    EventId = eventId,
+                    UserId = userId
+                });
+                await _unitOfWork.SaveAsync();
+                await _emailService.SendEmail(user.Email, "Оплата курсу на платформі JetStudy", $"<h4>Ви подали заявку на курс {foundedEvent.Title}</h4>\r\n<hr />\r\n<p><strong></strong>Оплату потрібно здійснити на наступну карту <strong>4149 4324 9430 1230</strong> протягом 12 годин.</p>\r\n<p>Після цього вас буде зараховано на курс інструктором.</p>");
+            }
+            else if (application != null)
+                throw new HttpException(ErrorMessages.ApplicationExist, HttpStatusCode.BadRequest);
+            else if (user == null)
+                throw new HttpException(ErrorMessages.InvalidUserId, HttpStatusCode.BadRequest);
+            else if (foundedEvent == null)
+                throw new HttpException(ErrorMessages.InvalidEventId, HttpStatusCode.BadRequest);
         }
 
         public bool IsExist(int id)

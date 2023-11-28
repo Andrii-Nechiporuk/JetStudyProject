@@ -73,15 +73,15 @@ if (app.Environment.IsDevelopment())
 
 app.UseCors("CORSPolicy");
 
-app.MapIdentityApi<User>();
-
 app.UseHttpsRedirection();
+
+app.UseStaticFiles();
 
 app.UseMiddleware<ExceptionMiddleware>();
 
 app.UseAuthorization();
 
-app.UseStaticFiles();
+app.MapIdentityApi<User>();
 
 app.MapControllers();
 

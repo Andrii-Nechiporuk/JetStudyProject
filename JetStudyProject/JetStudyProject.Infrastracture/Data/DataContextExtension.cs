@@ -215,7 +215,7 @@ namespace JetStudyProject.Infrastracture.Data
                 new Event
                 {
                     Id = 1,
-                    Title = "«UI/UX Design",
+                    Title = "UI/UX Design",
                     StartDate = new DateTime(2023, 12, 10),
                     EndDate = new DateTime(2023, 12, 11),
                     StartTime = new TimeOnly(12, 0),
@@ -241,7 +241,7 @@ namespace JetStudyProject.Infrastracture.Data
                 new Event
                 {
                     Id = 2,
-                    Title = "«UI/UX Design",
+                    Title = "UI/UX Design",
                     StartDate = new DateTime(2023, 12, 10),
                     EndDate = new DateTime(2023, 12, 11),
                     StartTime = new TimeOnly(12, 0),

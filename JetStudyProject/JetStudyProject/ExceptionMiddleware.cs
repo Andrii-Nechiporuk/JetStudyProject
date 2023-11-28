@@ -4,15 +4,25 @@ using System.Text.Json;
 
 namespace JetStudyProject
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class ExceptionMiddleware
     {
         private readonly RequestDelegate _next;
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="next"></param>
         public ExceptionMiddleware(RequestDelegate next)
         {
             _next = next;
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="httpContext"></param>
+        /// <returns></returns>
         public async Task InvokeAsync(HttpContext httpContext)
         {
             try

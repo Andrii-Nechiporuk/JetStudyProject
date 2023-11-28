@@ -55,11 +55,17 @@ namespace JetStudyProject.Controllers
         {
             return _eventService.GetSortedFilteredEventPreviews(searchString, dateFilter, categoryId, eventTypeId);
         }
-
-        [HttpPost("send-email")]
-        public IActionResult SendEmail(EmailDto request)
+        /// <summary>
+        /// Sends request to event and user recives email with card credentials of instructor
+        /// </summary>
+        /// <param name="eventId">Id of event which student wants to purchase</param>
+        /// <returns></returns>
+        [HttpPost("send-request-to-event")]
+        [Authorize]
+        public async Task<IActionResult> SendRequest(int eventId)
         {
-            _emailService.SendEmail(request);
+            var userId = await _userService.GetUserId(User);
+            await _eventService.SendRequest(userId, eventId);
             return Ok();
         }
     }
