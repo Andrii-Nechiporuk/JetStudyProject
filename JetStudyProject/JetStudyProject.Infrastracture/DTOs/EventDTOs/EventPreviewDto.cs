@@ -18,6 +18,8 @@ namespace JetStudyProject.Infrastracture.DTOs.EventDTOs
         public TimeOnly StartTime { get; set; }
         public UserDto? Creator { get; set; }
         public string? EventType { get; set; }
+        public int EventTypeId { get; set; }
+        public int CategoryId { get; set; }
         public List<UserDto>? Lecturers { get; set; }
     }
 }

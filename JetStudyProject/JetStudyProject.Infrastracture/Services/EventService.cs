@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
+using Azure;
 using JetStudyProject.Core.Entities;
 using JetStudyProject.Core.Specifications;
 using JetStudyProject.Infrastracture.DataAccess;
 using JetStudyProject.Infrastracture.DTOs.EventDTOs;
 using JetStudyProject.Infrastracture.Interfaces;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -62,6 +64,46 @@ namespace JetStudyProject.Infrastracture.Services
         public List<EventPreviewDto> GetEventsPreviews()
         {
             var events = _unitOfWork.EventRepository.GetListBySpec(new Events.WithUserAndEventAndLectorers());
+            return _mapper.Map<List<EventPreviewDto>>(events);
+        }
+
+        public List<EventPreviewDto> GetSortedFilteredEventPreviews(string? searchString, string? dateFilter, int categoryId = 0, int eventTypeId = 0)
+        {
+            var events = _unitOfWork.EventRepository.GetListBySpec(new Events.WithUserAndEventAndLectorers());
+
+            if (searchString != null)
+            {
+                events = events.Where(p => p.Title.ToLower().Contains(searchString.ToLower()));
+            }
+
+            if (dateFilter != null)
+            {
+                switch (dateFilter)
+                {
+                    case "Week":
+                        events = events.Where(p => p.StartDate <= DateTime.Now.AddDays(7) && p.StartDate >= DateTime.Now.Date);
+                        break;
+                    case "Months":
+                        events = events.Where(p => p.StartDate <= DateTime.Now.AddMonths(1) && p.StartDate >= DateTime.Now.Date);
+                        break;
+                    case "Year":
+                        events = events.Where(p => p.StartDate <= DateTime.Now.AddYears(1) && p.StartDate >= DateTime.Now.Date);
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+            if (categoryId != 0)
+            {
+                events = events.Where(p => p.CategoryId == categoryId);
+            }
+
+            if (eventTypeId != 0)
+            {
+                events = events.Where(p => p.EventTypeId == eventTypeId);
+            }
+
             return _mapper.Map<List<EventPreviewDto>>(events);
         }
 

@@ -43,6 +43,19 @@ namespace JetStudyProject.Controllers
             return  _eventService.GetEventsPreviews();
         }
 
+        /// <summary>
+        /// Returns a list of events filtered based on the provided parameters
+        /// </summary>
+        /// <param name="searchString">The string to search for in the post title</param>
+        /// <param name="dateFilter">The filter to apply to the post date. Valid values are "Week", "Month" and "Year"</param>
+        /// <param name="categoryId">The field to sort the posts by categories. Set to 0 for default.</param>
+        /// <param name="eventTypeId">The field to sort the posts by event types. Set to 0 for default.</param>
+        [HttpGet("parameters")]
+        public List<EventPreviewDto> GetPreviewEventsWithFilter(string? searchString, string? dateFilter, int categoryId, int eventTypeId)
+        {
+            return _eventService.GetSortedFilteredEventPreviews(searchString, dateFilter, categoryId, eventTypeId);
+        }
+
         [HttpPost("send-email")]
         public IActionResult SendEmail(EmailDto request)
         {
