@@ -1,19 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity.UI.Services;
-using JetStudyProject.Infrastracture.DTOs.EmailDTOs;
-using JetStudyProject.Infrastracture.Interfaces;
-using MailKit.Security;
-using Microsoft.Extensions.Configuration;
+﻿using MailKit.Security;
 using MimeKit.Text;
 using MimeKit;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using MailKit.Net.Smtp;
 
-namespace JetStudyProject.Infrastracture.Services
+namespace JetStudyProject
 {
     public class EmailSender : IEmailSender
     {
@@ -31,7 +22,7 @@ namespace JetStudyProject.Infrastracture.Services
             emailToSend.Subject = subject;
             emailToSend.Body = new TextPart(TextFormat.Html) { Text = htmlMessage };
 
-            using (var smtp = new SmtpClient())  
+            using (var smtp = new SmtpClient())
             {
                 smtp.Connect(_config.GetSection("EmailHost").Value, 587, SecureSocketOptions.StartTls);
                 smtp.Authenticate(_config.GetSection("EmailUsername").Value, _config.GetSection("EmailPassword").Value);

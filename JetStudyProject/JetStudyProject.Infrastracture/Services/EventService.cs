@@ -8,7 +8,6 @@ using JetStudyProject.Infrastracture.Exceptions;
 using JetStudyProject.Infrastracture.Interfaces;
 using JetStudyProject.Infrastracture.Resources;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
