@@ -41,6 +41,10 @@ builder.Services.AddDbContext<DataContext>(options =>
 
 builder.Services.AddAuthorization();
 
+builder.Services
+    .AddAuthentication()
+    .AddBearerToken();
+
 builder.Services.AddIdentityApiEndpoints<User>()
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<DataContext>();
