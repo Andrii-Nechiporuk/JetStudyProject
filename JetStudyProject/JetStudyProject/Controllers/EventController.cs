@@ -3,6 +3,7 @@ using JetStudyProject.Infrastracture.DTOs.EmailDTOs;
 using JetStudyProject.Infrastracture.DTOs.EventDTOs;
 using JetStudyProject.Infrastracture.Interfaces;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -55,6 +56,20 @@ namespace JetStudyProject.Controllers
         {
             return _eventService.GetSortedFilteredEventPreviews(searchString, dateFilter, categoryId, eventTypeId);
         }
+        /// <summary>
+        /// Creates event in db and transfers image to root folder
+        /// </summary>
+        /// <param name="eventCreateDto">StartDate format [YYYY-MM-DD]; StartTime format [HH:MM:SS]</param>
+        /// <returns></returns>
+        [HttpPost("create")]
+        [Authorize]
+        public async Task<IActionResult> CreateEvent([FromForm] EventCreateDto eventCreateDto)
+        {
+            var userId = await _userService.GetUserId(User);
+            await _eventService.CreateEvent(eventCreateDto, userId);
+            return Ok();
+        }
+
         /// <summary>
         /// Sends request to event and user recives email with card credentials of instructor
         /// </summary>

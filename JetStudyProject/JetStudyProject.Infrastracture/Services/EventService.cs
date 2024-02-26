@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Azure;
 using JetStudyProject.Core.Entities;
 using JetStudyProject.Core.Specifications;
 using JetStudyProject.Infrastracture.DataAccess;
@@ -7,7 +6,10 @@ using JetStudyProject.Infrastracture.DTOs.EventDTOs;
 using JetStudyProject.Infrastracture.Exceptions;
 using JetStudyProject.Infrastracture.Interfaces;
 using JetStudyProject.Infrastracture.Resources;
+using JetStudyProject.Infrastracture.Utilities;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Hosting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,15 +23,17 @@ namespace JetStudyProject.Infrastracture.Services
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly UserManager<User> _userManager;
         private readonly IEmailService _emailService;
 
-        public EventService(IUnitOfWork unitOfWork, IMapper mapper, UserManager<User> userManager, IEmailService emailService)
+        public EventService(IUnitOfWork unitOfWork, IMapper mapper, UserManager<User> userManager, IEmailService emailService, IWebHostEnvironment webHostEnvironment)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _userManager = userManager;
             _emailService = emailService;
+            _webHostEnvironment = webHostEnvironment;
         }
         public async Task<EventFullDto> GetEventAuthorized(int id, string userId)
         {
@@ -110,6 +114,23 @@ namespace JetStudyProject.Infrastracture.Services
 
             return _mapper.Map<List<EventPreviewDto>>(events);
         }
+
+        public async Task CreateEvent(EventCreateDto eventCreateDto, string userId)
+        {
+            var eventToCreate = _mapper.Map<Event>(eventCreateDto);
+
+            eventToCreate.CreatorId = userId;
+            if(eventCreateDto.ImageFile != null)
+            {
+                eventToCreate.Thumbnail = await SaveImage(eventCreateDto.ImageFile);
+            }
+            eventToCreate.StatusForInstructorId = 1;
+            eventToCreate.StatusForAdministratorId = 1;
+            eventToCreate.StatusForStudentId = 1;
+            await _unitOfWork.EventRepository.Insert(eventToCreate);
+            await _unitOfWork.SaveAsync();
+        }
+
         public async Task SendRequest(string userId, int eventId)
         {
             var user = await _userManager.FindByIdAsync(userId);
@@ -131,6 +152,27 @@ namespace JetStudyProject.Infrastracture.Services
                 throw new HttpException(ErrorMessages.InvalidUserId, HttpStatusCode.BadRequest);
             else if (foundedEvent == null)
                 throw new HttpException(ErrorMessages.InvalidEventId, HttpStatusCode.BadRequest);
+        }
+
+        public async Task<string> SaveImage(IFormFile imageFile)
+        {
+            string imageName = new string(Path.GetFileNameWithoutExtension(imageFile.FileName).Take(10).ToArray()).Replace(' ', '-');
+            imageName = imageName + DateTime.Now.ToString("yymmssfff") + Path.GetExtension(imageFile.FileName);
+            var postFolder = Path.Combine(_webHostEnvironment.WebRootPath, WebConstants.eventsImagesPath);
+            var imagePath = Path.Combine(postFolder, imageName);
+            bool isExists = Directory.Exists(postFolder);
+
+            if (!isExists)
+            {
+                Directory.CreateDirectory(postFolder);
+            }
+
+            using (var fileStream = new FileStream(imagePath, FileMode.Create))
+            {
+                await imageFile.CopyToAsync(fileStream);
+            }
+
+            return imageName;
         }
 
         public bool IsExist(int id)

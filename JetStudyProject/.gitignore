@@ -398,3 +398,4 @@ FodyWeavers.xsd
 *.sln.iml
 
 /JetStudyProject.Infrastracture/Migrations
+/JetStudyProject/wwwroot/Images/

@@ -4,6 +4,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.8.34309.116
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JetStudyProject", "JetStudyProject\JetStudyProject.csproj", "{1EE871AF-30B8-4A7F-B737-809BE0499FC1}"
+	ProjectSection(ProjectDependencies) = postProject
+		{D3F9A54B-CD43-4B22-B5FE-A77D789802D5} = {D3F9A54B-CD43-4B22-B5FE-A77D789802D5}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JetStudyProject.Core", "JetStudyProject.Core\JetStudyProject.Core.csproj", "{D3F9A54B-CD43-4B22-B5FE-A77D789802D5}"
 EndProject

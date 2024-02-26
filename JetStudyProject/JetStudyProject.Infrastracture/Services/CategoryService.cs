@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Azure;
 using JetStudyProject.Core.Entities;
 using JetStudyProject.Infrastracture.DataAccess;
 using JetStudyProject.Infrastracture.DTOs.CategoryDTOs;
