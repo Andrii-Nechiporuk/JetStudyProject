@@ -12,6 +12,7 @@ namespace JetStudyProject.Infrastracture.Interfaces
     {
         Task Register(UserRegisterDto userRegisterDto);
         Task<LoginAnswerDto> Login(UserLoginDto userLoginDto);
+        Task<LoginAnswerDto> LoginWithGoogle(string credential);
         Task ConfirmEmail(string userId, string code);
         Task Logout();
     }

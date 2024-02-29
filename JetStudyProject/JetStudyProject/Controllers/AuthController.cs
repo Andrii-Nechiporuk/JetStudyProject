@@ -38,6 +38,13 @@ namespace JetStudyProject.Controllers
             return Ok(token);
         }
 
+        [HttpPost("login-with-google")]
+        public async Task<IActionResult> LoginWithGoogle([FromBody] string credential)
+        {
+            var token = await _authService.LoginWithGoogle(credential);
+            return Ok(token);
+        }
+
         [HttpGet("check-authorize")]
         [Authorize(Roles = "Student")]
         public IActionResult CheckAuthorize()
