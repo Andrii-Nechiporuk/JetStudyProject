@@ -70,6 +70,15 @@ namespace JetStudyProject.Infrastracture.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Invalid email or password..
+        /// </summary>
+        internal static string InvalidCredentials {
+            get {
+                return ResourceManager.GetString("InvalidCredentials", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Invalid event id..
         /// </summary>
         internal static string InvalidEventId {

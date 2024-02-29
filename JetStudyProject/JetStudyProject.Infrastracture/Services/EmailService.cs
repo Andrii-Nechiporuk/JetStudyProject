@@ -21,7 +21,7 @@ namespace JetStudyProject.Infrastracture.Services
             _config = config;
         }
 
-        public Task SendEmail(string email, string subject, string htmlMessage)
+        public async Task SendEmailAsync(string email, string subject, string htmlMessage)
         {
             var emailToSend = new MimeMessage();
             emailToSend.From.Add(MailboxAddress.Parse(_config.GetSection("EmailUsername").Value));
@@ -31,12 +31,11 @@ namespace JetStudyProject.Infrastracture.Services
 
             using (var smtp = new SmtpClient())
             {
-                smtp.Connect(_config.GetSection("EmailHost").Value, 587, SecureSocketOptions.StartTls);
-                smtp.Authenticate(_config.GetSection("EmailUsername").Value, _config.GetSection("EmailPassword").Value);
-                smtp.Send(emailToSend);
-                smtp.Disconnect(true);
+                await smtp.ConnectAsync(_config.GetSection("EmailHost").Value, 587, SecureSocketOptions.StartTls);
+                await smtp.AuthenticateAsync(_config.GetSection("EmailUsername").Value, _config.GetSection("EmailPassword").Value);
+                await smtp.SendAsync(emailToSend);
+                await smtp.DisconnectAsync(true);
             }
-            return Task.FromResult(true);
         }
     }
 }
