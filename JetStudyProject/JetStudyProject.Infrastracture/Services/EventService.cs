@@ -144,7 +144,7 @@ namespace JetStudyProject.Infrastracture.Services
                     UserId = userId
                 });
                 await _unitOfWork.SaveAsync();
-                await _emailService.SendEmail(user.Email, "Оплата курсу на платформі JetStudy", $"<h4>Ви подали заявку на курс {foundedEvent.Title}</h4>\r\n<hr />\r\n<p><strong></strong>Оплату потрібно здійснити на наступну карту <strong>4149 4324 9430 1230</strong> протягом 12 годин.</p>\r\n<p>Після цього вас буде зараховано на курс інструктором.</p>");
+                await _emailService.SendEmailAsync(user.Email, "Оплата курсу на платформі JetStudy", $"<h4>Ви подали заявку на курс {foundedEvent.Title}</h4>\r\n<hr />\r\n<p><strong></strong>Оплату потрібно здійснити на наступну карту <strong>4149 4324 9430 1230</strong> протягом 12 годин.</p>\r\n<p>Після цього вас буде зараховано на курс інструктором.</p>");
             }
             else if (application != null)
                 throw new HttpException(ErrorMessages.ApplicationExist, HttpStatusCode.BadRequest);

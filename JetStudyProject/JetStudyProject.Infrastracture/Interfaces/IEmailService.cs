@@ -9,6 +9,6 @@ namespace JetStudyProject.Infrastracture.Interfaces
 {
     public interface IEmailService
     {
-        Task SendEmail(string email, string subject, string htmlMessage);
+        Task SendEmailAsync(string email, string subject, string htmlMessage);
     }
 }

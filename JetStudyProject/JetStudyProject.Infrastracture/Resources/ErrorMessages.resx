@@ -120,6 +120,9 @@
   <data name="ApplicationExist" xml:space="preserve">
     <value>Ви вже подали заяву на цю подію</value>
   </data>
+  <data name="InvalidCredentials" xml:space="preserve">
+    <value>Invalid email or password.</value>
+  </data>
   <data name="InvalidEventId" xml:space="preserve">
     <value>Invalid event id.</value>
   </data>
