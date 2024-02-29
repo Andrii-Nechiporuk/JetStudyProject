@@ -1,4 +1,5 @@
-﻿using JetStudyProject.Core.Entities;
+﻿using Google.Apis.Auth;
+using JetStudyProject.Core.Entities;
 using JetStudyProject.Infrastracture.DTOs.AuthDTOs;
 using JetStudyProject.Infrastracture.DTOs.UserDTOs;
 using JetStudyProject.Infrastracture.Exceptions;
@@ -8,6 +9,7 @@ using JetStudyProject.Infrastracture.Utilities;
 using Microsoft.AspNetCore.Hosting.Server;
 using Microsoft.AspNetCore.Hosting.Server.Features;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
@@ -98,7 +100,32 @@ namespace JetStudyProject.Infrastracture.Services
             await _signInManager.SignInAsync(user, userLoginDto.RememberMe);
 
             return new LoginAnswerDto { Key = await GenerateTokenAsync(user) };
+        }
 
+        public async Task<LoginAnswerDto> LoginWithGoogle(string credential)
+        {
+            var settings = new GoogleJsonWebSignature.ValidationSettings()
+            {
+                Audience = new List<string> { _configuration["Google:GoogleClientId"] }
+            };
+
+            var payload = await GoogleJsonWebSignature.ValidateAsync(credential, settings);
+
+            var user = await _userManager.FindByEmailAsync(payload.Email);
+
+            if (user != null)
+            {
+                if (!await _userManager.IsEmailConfirmedAsync(user))
+                {
+                    throw new HttpException("Ви не підтвердили свою електронну адресу", HttpStatusCode.BadRequest);
+                }
+
+                return new LoginAnswerDto { Key = await GenerateTokenAsync(user) };
+            }
+            else
+            {
+                throw new HttpException("Користувача з такою електронною адресою не існує", HttpStatusCode.BadRequest);
+            }
         }
 
         private async Task<string> GenerateTokenAsync(User user)
