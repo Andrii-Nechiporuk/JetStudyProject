@@ -70,6 +70,15 @@ namespace JetStudyProject.Infrastracture.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Event you`re trying to reach doesn`t exist.
+        /// </summary>
+        internal static string EventDoesNotExist {
+            get {
+                return ResourceManager.GetString("EventDoesNotExist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Invalid email or password..
         /// </summary>
         internal static string InvalidCredentials {
@@ -84,6 +93,15 @@ namespace JetStudyProject.Infrastracture.Resources {
         internal static string InvalidEventId {
             get {
                 return ResourceManager.GetString("InvalidEventId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You don`t have permission to do this..
+        /// </summary>
+        internal static string InvalidPermission {
+            get {
+                return ResourceManager.GetString("InvalidPermission", resourceCulture);
             }
         }
         

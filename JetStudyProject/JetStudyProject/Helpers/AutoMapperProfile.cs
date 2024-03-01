@@ -27,6 +27,13 @@ namespace JetStudyProject.Helpers
 
             CreateMap<EventFullDto, Event>();
             CreateMap<EventCreateDto, Event>();
+            CreateMap<EventEditDto, Event>()
+            .ForAllMembers(opts =>
+            {
+                opts.AllowNull();
+                opts.Condition((src, dest, srcMember) => srcMember != null);
+            });
+
 
             CreateMap<Event, EventPreviewDto>()
                 .ForMember(dest => dest.EventType, from => from.MapFrom(x => x.EventType.Title))
