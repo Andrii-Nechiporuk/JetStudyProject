@@ -202,6 +202,87 @@ namespace JetStudyProject.Infrastracture.Services
             await _unitOfWork.SaveAsync();
         }
 
+        public async Task DeleteEvent(int eventId, string userId)
+        {
+            if (!IsExist(eventId))
+            {
+                throw new HttpException(ErrorMessages.EventDoesNotExist, HttpStatusCode.BadRequest);
+            }
+
+            var user = await _userManager.FindByIdAsync(userId);
+
+            if (user == null)
+            {
+                throw new HttpException(ErrorMessages.InvalidUserId, HttpStatusCode.BadRequest);
+            }
+
+            var eventDelete = _unitOfWork.EventRepository.GetById(eventId);
+
+            if (eventDelete.CreatorId != user.Id)
+            {
+                throw new HttpException(ErrorMessages.InvalidUserId, HttpStatusCode.BadRequest);
+            }
+
+            if (!(eventDelete.StatusForInstructorId == 1 || eventDelete.StatusForInstructorId == 2))
+            {
+                throw new HttpException("Неможливо видалити опубліковану подію, зв'яжіться з адміністратором", HttpStatusCode.BadRequest);
+            }
+
+            DeleteImage(eventDelete.Thumbnail);
+            _unitOfWork.EventRepository.Delete(eventId);
+            await _unitOfWork.SaveAsync();
+        }
+
+        public async Task SendEventToModerate(int eventId, string userId)
+        {
+            if (!IsExist(eventId))
+            {
+                throw new HttpException(ErrorMessages.EventDoesNotExist, HttpStatusCode.BadRequest);
+            }
+
+            var user = await _userManager.FindByIdAsync(userId);
+
+            if (user == null)
+            {
+                throw new HttpException(ErrorMessages.InvalidUserId, HttpStatusCode.BadRequest);
+            }
+
+            var eventToEdit = _unitOfWork.EventRepository.GetById(eventId);
+
+            if (eventToEdit.CreatorId != user.Id)
+            {
+                throw new HttpException("Ви не можете змінювати подію, яка вам не належить", HttpStatusCode.BadRequest);
+            }
+
+            if (!(eventToEdit.StatusForInstructorId == 1 || eventToEdit.StatusForInstructorId == 4))
+            {
+                throw new HttpException("Подія вже на модерації, або опублікована", HttpStatusCode.BadRequest);
+            }
+
+            eventToEdit.StatusForInstructorId = 2;
+            _unitOfWork.EventRepository.Update(eventToEdit);
+            await _unitOfWork.SaveAsync();
+        }
+
+        public async Task ApproveEvent(int eventId, string userId)
+        {
+            if (!IsExist(eventId))
+            {
+                throw new HttpException(ErrorMessages.EventDoesNotExist, HttpStatusCode.BadRequest);
+            }
+
+            var eventToEdit = _unitOfWork.EventRepository.GetById(eventId);
+
+            if (eventToEdit.StatusForInstructorId == 3)
+            {
+                throw new HttpException("Подія вже опублікована", HttpStatusCode.BadRequest);
+            }
+
+            eventToEdit.StatusForInstructorId = 3;
+            _unitOfWork.EventRepository.Update(eventToEdit);
+            await _unitOfWork.SaveAsync();
+        }
+
         public async Task SendRequest(string userId, int eventId)
         {
             var user = await _userManager.FindByIdAsync(userId);

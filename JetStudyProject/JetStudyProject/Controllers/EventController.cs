@@ -109,6 +109,51 @@ namespace JetStudyProject.Controllers
         }
 
         /// <summary>
+        /// Deletes an event by ID
+        /// </summary>
+        /// <param name="id">The ID of the event to delete</param>
+        [HttpDelete("common-delete")]
+        [Authorize(Roles = "Instructor, Admin")]
+        public async Task<IActionResult> DeleteEvent(int id)
+        {
+            var userId = await _userService.GetUserId(User);
+
+            await _eventService.DeleteEvent(id, userId);
+
+            return Ok("Подію успішно видалено");
+        }
+
+        /// <summary>
+        /// Sends event to moderation by ID
+        /// </summary>
+        /// <param name="id">The ID of the event</param>
+        [HttpPut("send-event-to-moderation")]
+        [Authorize(Roles = "Instructor, Admin")]
+        public async Task<IActionResult> SendEventToModeration(int id)
+        {
+            var userId = await _userService.GetUserId(User);
+
+            await _eventService.SendEventToModerate(id, userId);
+
+            return Ok("Подію успішно надіслано на модерацію");
+        }
+
+        /// <summary>
+        /// Approves event by ID, only for admins
+        /// </summary>
+        /// <param name="id">The ID of the event</param>
+        [HttpPut("approve-event")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> ApproveEvent(int id)
+        {
+            var userId = await _userService.GetUserId(User);
+
+            await _eventService.ApproveEvent(id, userId);
+
+            return Ok("Подію успішно опубліковано");
+        }
+
+        /// <summary>
         /// Sends request to event and user recives email with card credentials of instructor
         /// </summary>
         /// <param name="eventId">Id of event which student wants to purchase</param>
