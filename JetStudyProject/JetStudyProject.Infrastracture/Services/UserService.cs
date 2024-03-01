@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using JetStudyProject.Core.Entities;
+using JetStudyProject.Infrastracture.DataAccess;
 using JetStudyProject.Infrastracture.Exceptions;
 using JetStudyProject.Infrastracture.Interfaces;
 using Microsoft.AspNetCore.Identity;
@@ -16,10 +17,12 @@ namespace JetStudyProject.Infrastracture.Services
     public class UserService : IUserService
     {
         private readonly UserManager<User> _userManager;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public UserService(UserManager<User> userManager)
+        public UserService(UserManager<User> userManager, IUnitOfWork unitOfWork)
         {
             _userManager = userManager;
+            _unitOfWork = unitOfWork;
         }
 
         public async Task<User> GetUser(ClaimsPrincipal claimsPrincipal)
@@ -38,6 +41,18 @@ namespace JetStudyProject.Infrastracture.Services
         {
             var user = await GetUser(claimsPrincipal);
             return user.Id;
+        }
+
+        public async Task BecomeInstructor(string userId)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+
+            if (!await _userManager.IsInRoleAsync(user, "Instructor")) 
+            {
+                await _userManager.AddToRoleAsync(user, "Instructor");
+            }
+            else
+                throw new HttpException("You are already registered as instructor", HttpStatusCode.BadRequest);
         }
     }
 }

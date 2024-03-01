@@ -17,6 +17,7 @@ namespace JetStudyProject.Infrastracture.Interfaces
         List<EventPreviewDto> GetThisMonthEventPreviews();
         List<EventPreviewDto> GetEventPreviewsAfterThisMonths();
         Task CreateEvent(EventCreateDto eventCreateDto, string userId);
+        Task EditEvent(EventEditDto eventEditDto, string userId, int eventId);
         Task SendRequest(string userId, int eventId);
     }
 }

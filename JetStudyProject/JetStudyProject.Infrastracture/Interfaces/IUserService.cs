@@ -12,5 +12,6 @@ namespace JetStudyProject.Infrastracture.Interfaces
     {
         Task<User> GetUser(ClaimsPrincipal claimsPrincipal);
         Task<string> GetUserId(ClaimsPrincipal user);
+        Task BecomeInstructor(string userId);
     }
 }

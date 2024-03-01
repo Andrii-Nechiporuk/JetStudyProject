@@ -16,6 +16,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using Azure;
 
 namespace JetStudyProject.Infrastracture.Services
 {
@@ -168,6 +169,39 @@ namespace JetStudyProject.Infrastracture.Services
             await _unitOfWork.SaveAsync();
         }
 
+        public async Task EditEvent(EventEditDto eventEditDto, string userId, int eventId)
+        {
+            if (!IsExist(eventId))
+            {
+                throw new HttpException(ErrorMessages.EventDoesNotExist, HttpStatusCode.BadRequest);
+            }
+
+            var user = await _userManager.FindByIdAsync(userId);
+
+            if (user == null)
+            {
+                throw new HttpException(ErrorMessages.InvalidUserId, HttpStatusCode.BadRequest);
+            }
+
+            var eventToEdit = _unitOfWork.EventRepository.GetById(eventId);
+
+            if (eventToEdit.CreatorId != userId && !await _userManager.IsInRoleAsync(user, "Instructor"))
+            {
+                throw new HttpException(ErrorMessages.InvalidPermission, HttpStatusCode.BadRequest);
+            }
+
+            if (eventEditDto.ImageFile != null)
+            {
+                DeleteImage(eventToEdit.Thumbnail);
+                eventToEdit.Thumbnail = await SaveImage(eventEditDto.ImageFile);
+            }
+
+            _mapper.Map<EventEditDto, Event>(eventEditDto, eventToEdit);
+
+            _unitOfWork.EventRepository.Update(eventToEdit);
+            await _unitOfWork.SaveAsync();
+        }
+
         public async Task SendRequest(string userId, int eventId)
         {
             var user = await _userManager.FindByIdAsync(userId);
@@ -210,6 +244,13 @@ namespace JetStudyProject.Infrastracture.Services
             }
 
             return imageName;
+        }
+
+        public void DeleteImage(string imageName)
+        {
+            var imagePath = Path.Combine(_webHostEnvironment.WebRootPath, WebConstants.eventsImagesPath, imageName);
+            if (File.Exists(imagePath))
+                File.Delete(imagePath);
         }
 
         public bool IsExist(int id)

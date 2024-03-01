@@ -15,13 +15,10 @@ namespace JetStudyProject.Controllers
     {
         private readonly IEventService _eventService;
         private readonly IUserService _userService;
-        private readonly IEmailService _emailService;
-
-        public EventController(IEventService eventService, IUserService userService, IEmailService emailService)
+        public EventController(IEventService eventService, IUserService userService)
         {
             _eventService = eventService;
             _userService = userService;
-            _emailService = emailService;
         }
 
         [HttpGet("authorized/{id}")]
@@ -90,11 +87,24 @@ namespace JetStudyProject.Controllers
         /// <param name="eventCreateDto">StartDate format [YYYY-MM-DD]; StartTime format [HH:MM:SS]</param>
         /// <returns></returns>
         [HttpPost("create")]
-        [Authorize]
+        [Authorize(Roles = "Instructor, Admin")]
         public async Task<IActionResult> CreateEvent([FromForm] EventCreateDto eventCreateDto)
         {
             var userId = await _userService.GetUserId(User);
             await _eventService.CreateEvent(eventCreateDto, userId);
+            return Ok();
+        }
+
+        /// <summary>
+        /// Edits a post by ID
+        /// </summary>
+        /// <param name="id">The ID of the post to edit</param>
+        [HttpPut("{id}")]
+        [Authorize(Roles = "Instructor, Admin")]
+        public async Task<IActionResult> EditPost(int id, [FromForm] EventEditDto eventCteateDto)
+        {
+            var userId = await _userService.GetUserId(User);
+            await _eventService.EditEvent(eventCteateDto, userId, id);
             return Ok();
         }
 
