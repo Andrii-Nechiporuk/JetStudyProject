@@ -3,6 +3,7 @@ using JetStudyProject.Core.Entities;
 using JetStudyProject.Infrastracture.DataAccess;
 using JetStudyProject.Infrastracture.Exceptions;
 using JetStudyProject.Infrastracture.Interfaces;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
@@ -17,12 +18,14 @@ namespace JetStudyProject.Infrastracture.Services
     public class UserService : IUserService
     {
         private readonly UserManager<User> _userManager;
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly IWebHostEnvironment _webHostEnvironment;
+        private readonly IMapper _mapper;
 
-        public UserService(UserManager<User> userManager, IUnitOfWork unitOfWork)
+        public UserService(UserManager<User> userManager, IWebHostEnvironment webHostEnvironment, IMapper mapper)
         {
             _userManager = userManager;
-            _unitOfWork = unitOfWork;
+            _webHostEnvironment = webHostEnvironment;
+            _mapper = mapper;
         }
 
         public async Task<User> GetUser(ClaimsPrincipal claimsPrincipal)
@@ -53,6 +56,80 @@ namespace JetStudyProject.Infrastracture.Services
             }
             else
                 throw new HttpException("You are already registered as instructor", HttpStatusCode.BadRequest);
+        }
+
+        public async Task ChangeUserName(ClaimsPrincipal claimsPrincipal, string name)
+        {
+            var user = await GetUser(claimsPrincipal);
+            var result = await _userManager.SetUserNameAsync(user, name);
+            HandleResult(result);
+        }
+
+        public async Task ChangeName(ClaimsPrincipal claimsPrincipal, string name)
+        {
+            if (string.IsNullOrEmpty(name))
+            {
+                throw new HttpException("The name field is required.", HttpStatusCode.BadRequest);
+            }
+
+            var user = await GetUser(claimsPrincipal);
+            user.Name = name;
+            var result = await _userManager.UpdateAsync(user);
+            HandleResult(result);
+        }
+
+        public async Task ChangeSurname(ClaimsPrincipal claimsPrincipal, string surname)
+        {
+            if (string.IsNullOrEmpty(surname))
+            {
+                throw new HttpException("The name field is required.", HttpStatusCode.BadRequest);
+            }
+
+            var user = await GetUser(claimsPrincipal);
+            user.Surname = surname;
+            var result = await _userManager.UpdateAsync(user);
+            HandleResult(result);
+        }
+
+        public async Task ChangePassword(ClaimsPrincipal claimsPrincipal, string currentPassword, string newPassword)
+        {
+            var user = await GetUser(claimsPrincipal);
+
+            if (!await _userManager.CheckPasswordAsync(user, currentPassword))
+            {
+                throw new HttpException("Invalid password.", HttpStatusCode.BadRequest);
+            }
+
+            if (currentPassword == newPassword)
+            {
+                throw new HttpException("New password cannot be the same as current password", HttpStatusCode.BadRequest);
+            }
+
+            var result = await _userManager.ChangePasswordAsync(user, currentPassword, newPassword);
+            HandleResult(result);
+        }
+
+        public async Task ChangeEmail(ClaimsPrincipal claimsPrincipal, string currentPassword, string newEmail)
+        {
+            var user = await GetUser(claimsPrincipal);
+
+            if (!await _userManager.CheckPasswordAsync(user, currentPassword))
+            {
+                throw new HttpException("Invalid password", HttpStatusCode.BadRequest);
+            }
+
+            var token = await _userManager.GenerateChangeEmailTokenAsync(user, newEmail);
+            var result = await _userManager.ChangeEmailAsync(user, newEmail, token);
+            HandleResult(result);
+        }
+
+        private void HandleResult(IdentityResult result)
+        {
+            if (!result.Succeeded)
+            {
+                string errors = string.Join(", ", result.Errors.Select(e => e.Description));
+                throw new HttpException(errors, HttpStatusCode.BadRequest);
+            }
         }
     }
 }
