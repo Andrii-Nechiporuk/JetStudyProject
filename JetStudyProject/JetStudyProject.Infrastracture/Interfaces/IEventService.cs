@@ -13,6 +13,9 @@ namespace JetStudyProject.Infrastracture.Interfaces
         Task<EventFullDto> GetEventAuthorized(int id, string userId);
         Task<EventFullDto> GetEvent(int id);
         List<EventPreviewDto> GetSortedFilteredEventPreviews(string? searchString, string? dateFilter, int categoryId, int eventTypeId);
+        List<EventPreviewDto> GetThisWeekEventPreviews();
+        List<EventPreviewDto> GetThisMonthEventPreviews();
+        List<EventPreviewDto> GetEventPreviewsAfterThisMonths();
         Task CreateEvent(EventCreateDto eventCreateDto, string userId);
         Task SendRequest(string userId, int eventId);
     }

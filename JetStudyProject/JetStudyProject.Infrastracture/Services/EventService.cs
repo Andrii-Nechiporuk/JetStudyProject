@@ -115,12 +115,49 @@ namespace JetStudyProject.Infrastracture.Services
             return _mapper.Map<List<EventPreviewDto>>(events);
         }
 
+        public List<EventPreviewDto> GetThisWeekEventPreviews()
+        {
+            var events = _unitOfWork.EventRepository.GetListBySpec(new Events.WithUserAndEventAndLectorers());
+
+            events = events.Where(p => p.StartDate <= DateTime.Now.AddDays(7) && p.StartDate >= DateTime.Now.Date);
+/*                    case "Months":
+                        events = events.Where(p => p.StartDate <= DateTime.Now.AddMonths(1) && p.StartDate >= DateTime.Now.Date);
+                    case "Year":
+                        events = events.Where(p => p.StartDate <= DateTime.Now.AddYears(1) && p.StartDate >= DateTime.Now.Date);*/
+
+            return _mapper.Map<List<EventPreviewDto>>(events);
+        }
+
+        public List<EventPreviewDto> GetThisMonthEventPreviews()
+        {
+            var events = _unitOfWork.EventRepository.GetListBySpec(new Events.WithUserAndEventAndLectorers());
+
+            var monthOfTheYear = DateTime.Now.Month;
+            var year = DateTime.Now.Year;
+
+            events = events.Where(p => p.StartDate >= DateTime.Now.AddDays(7) &&
+            p.StartDate <= DateTime.Now.AddDays(DateTime.DaysInMonth(year, monthOfTheYear) - DateTime.Now.Day));
+
+            return _mapper.Map<List<EventPreviewDto>>(events);
+        }
+
+        public List<EventPreviewDto> GetEventPreviewsAfterThisMonths()
+        {
+            var events = _unitOfWork.EventRepository.GetListBySpec(new Events.WithUserAndEventAndLectorers());
+
+            var monthOfTheYear = DateTime.Now.Month;
+            var year = DateTime.Now.Year;
+
+            events = events.Where(p => p.StartDate >= DateTime.Now.AddDays(DateTime.DaysInMonth(year, monthOfTheYear) - DateTime.Now.Day));
+
+            return _mapper.Map<List<EventPreviewDto>>(events);
+        }
         public async Task CreateEvent(EventCreateDto eventCreateDto, string userId)
         {
             var eventToCreate = _mapper.Map<Event>(eventCreateDto);
 
             eventToCreate.CreatorId = userId;
-            if(eventCreateDto.ImageFile != null)
+            if (eventCreateDto.ImageFile != null)
             {
                 eventToCreate.Thumbnail = await SaveImage(eventCreateDto.ImageFile);
             }
