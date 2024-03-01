@@ -56,6 +56,34 @@ namespace JetStudyProject.Controllers
         {
             return _eventService.GetSortedFilteredEventPreviews(searchString, dateFilter, categoryId, eventTypeId);
         }
+
+        /// <summary>
+        /// Returns list with events for this week
+        /// </summary>
+        [HttpGet("get-this-week-events")]
+        public List<EventPreviewDto> GetThisWeekEvents()
+        {
+            return _eventService.GetThisWeekEventPreviews();
+        }
+
+        /// <summary>
+        /// Returns list with events for this month
+        /// </summary>
+        [HttpGet("get-this-month-events")]
+        public List<EventPreviewDto> GetThisMonthEvents()
+        {
+            return _eventService.GetThisMonthEventPreviews();
+        }
+
+        /// <summary>
+        /// Returns list with events after this month
+        /// </summary>
+        [HttpGet("get-after-month-events")]
+        public List<EventPreviewDto> GetAfterMonthEvents()
+        {
+            return _eventService.GetEventPreviewsAfterThisMonths();
+        }
+
         /// <summary>
         /// Creates event in db and transfers image to root folder
         /// </summary>

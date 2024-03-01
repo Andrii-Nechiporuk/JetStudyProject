@@ -216,8 +216,8 @@ namespace JetStudyProject.Infrastracture.Data
                 {
                     Id = 1,
                     Title = "UI/UX Design",
-                    StartDate = new DateTime(2023, 12, 12),
-                    EndDate = new DateTime(2023, 12, 12),
+                    StartDate = new DateTime(2024, 03, 7),
+                    EndDate = new DateTime(2024, 03, 8),
                     StartTime = new TimeOnly(12, 0),
                     EndTime = new TimeOnly(14, 0),
                     Price = 200,
@@ -242,8 +242,8 @@ namespace JetStudyProject.Infrastracture.Data
                 {
                     Id = 2,
                     Title = "100 Days of Code: The Complete Python Pro Bootcamp for 2023",
-                    StartDate = new DateTime(2023, 12, 15),
-                    EndDate = new DateTime(2024, 3, 15),
+                    StartDate = new DateTime(2024, 03, 9),
+                    EndDate = new DateTime(2024, 3, 9),
                     StartTime = new TimeOnly(12, 0),
                     EndTime = new TimeOnly(14, 0),
                     Price = 150,
@@ -266,8 +266,8 @@ namespace JetStudyProject.Infrastracture.Data
                 {
                     Id = 3,
                     Title = "Machine Learning A-Z™: AI, Python & R + ChatGPT Bonus [2023]",
-                    StartDate = new DateTime(2023, 12, 17),
-                    EndDate = new DateTime(2023, 12, 18),
+                    StartDate = new DateTime(2024, 03, 31),
+                    EndDate = new DateTime(2024, 04, 5),
                     StartTime = new TimeOnly(16, 0),
                     EndTime = new TimeOnly(20, 0),
                     Price = 200,
@@ -290,8 +290,8 @@ namespace JetStudyProject.Infrastracture.Data
                 {
                     Id = 4,
                     Title = "The Complete JavaScript Course 2024: From Zero to Expert!",
-                    StartDate = new DateTime(2023, 12, 26),
-                    EndDate = new DateTime(2023, 12, 27),
+                    StartDate = new DateTime(2024, 04, 1),
+                    EndDate = new DateTime(2024, 04, 7),
                     StartTime = new TimeOnly(12, 0),
                     EndTime = new TimeOnly(14, 0),
                     Price = 350,
