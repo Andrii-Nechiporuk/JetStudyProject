@@ -9,13 +9,14 @@ namespace JetStudyProject.Infrastracture.Interfaces
 {
     public interface IEventService
     {
-        List<EventPreviewDto> GetEventsPreviews();
+        List<EventPreviewDto> GetEventsPreviews(int page, int pageSize);
         Task<EventFullDto> GetEventAuthorized(int id, string userId);
+        int GetPagesQuantity(int pageSize);
         Task<EventFullDto> GetEvent(int id);
-        List<EventPreviewDto> GetSortedFilteredEventPreviews(string? searchString, string? dateFilter, int categoryId, int eventTypeId);
-        List<EventPreviewDto> GetThisWeekEventPreviews();
-        List<EventPreviewDto> GetThisMonthEventPreviews();
-        List<EventPreviewDto> GetEventPreviewsAfterThisMonths();
+        List<EventPreviewDto> GetSortedFilteredEventPreviews(string? searchString, int page, int pageSize, string? dateFilter, int categoryId, int eventTypeId);
+        List<EventPreviewDto> GetThisWeekEventPreviews(int page, int pageSize);
+        List<EventPreviewDto> GetThisMonthEventPreviews(int page, int pageSize);
+        List<EventPreviewDto> GetEventPreviewsAfterThisMonths(int page, int pageSize);
         Task CreateEvent(EventCreateDto eventCreateDto, string userId);
         Task EditEvent(EventEditDto eventEditDto, string userId, int eventId);
         Task DeleteEvent(int eventId, string userId);

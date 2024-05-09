@@ -35,10 +35,27 @@ namespace JetStudyProject.Controllers
             return await _eventService.GetEvent(id);
         }
 
-        [HttpGet]
-        public List<EventPreviewDto> GetEventsPreviews()
+        /// <summary>
+        /// Returns quantity of pages of events in DB
+        /// </summary>
+        /// <param name="pageSize">The quantity of events to calculate pages quantity</param>
+        /// <returns>Returns quantity of pages of events in DB</returns>
+        [HttpGet("get-pages-quantity")]
+        public int GetPagesQuantity(int pageSize = 6)
         {
-            return  _eventService.GetEventsPreviews();
+            return _eventService.GetPagesQuantity(pageSize);
+        }
+
+
+        /// <summary>
+        /// Returns a list of events from DB
+        /// </summary>
+        /// <param name="page">The page to count from when taking events from DB. Set to 1 for default.</param>
+        /// <param name="pageSize">The quantity of events to take from DB. Set to 6 for default.</param>
+        [HttpGet]
+        public List<EventPreviewDto> GetEventsPreviews(int page = 1, int pageSize = 6)
+        {
+            return  _eventService.GetEventsPreviews(page, pageSize);
         }
 
         /// <summary>
@@ -48,37 +65,45 @@ namespace JetStudyProject.Controllers
         /// <param name="dateFilter">The filter to apply to the post date. Valid values are "Week", "Month" and "Year"</param>
         /// <param name="categoryId">The field to sort the posts by categories. Set to 0 for default.</param>
         /// <param name="eventTypeId">The field to sort the posts by event types. Set to 0 for default.</param>
+        /// <param name="page">The page to count from when taking events from DB. Set to 1 for default.</param>
+        /// <param name="pageSize">The quantity of events to take from DB. Set to 6 for default.</param>
         [HttpGet("parameters")]
-        public List<EventPreviewDto> GetPreviewEventsWithFilter(string? searchString, string? dateFilter, int categoryId, int eventTypeId)
+        public List<EventPreviewDto> GetPreviewEventsWithFilter(string? searchString, string? dateFilter, int categoryId, int eventTypeId, int page = 1, int pageSize = 6)
         {
-            return _eventService.GetSortedFilteredEventPreviews(searchString, dateFilter, categoryId, eventTypeId);
+            return _eventService.GetSortedFilteredEventPreviews(searchString, page, pageSize, dateFilter, categoryId, eventTypeId);
         }
 
         /// <summary>
         /// Returns list with events for this week
         /// </summary>
+        /// <param name="page">The page to count from when taking events from DB. Set to 1 for default.</param>
+        /// <param name="pageSize">The quantity of events to take from DB. Set to 6 for default.</param>
         [HttpGet("get-this-week-events")]
-        public List<EventPreviewDto> GetThisWeekEvents()
+        public List<EventPreviewDto> GetThisWeekEvents(int page = 1, int pageSize = 6)
         {
-            return _eventService.GetThisWeekEventPreviews();
+            return _eventService.GetThisWeekEventPreviews(page, pageSize);
         }
 
         /// <summary>
         /// Returns list with events for this month
         /// </summary>
+        /// <param name="page">The page to count from when taking events from DB. Set to 1 for default.</param>
+        /// <param name="pageSize">The quantity of events to take from DB. Set to 6 for default.</param>
         [HttpGet("get-this-month-events")]
-        public List<EventPreviewDto> GetThisMonthEvents()
+        public List<EventPreviewDto> GetThisMonthEvents(int page = 1, int pageSize = 6)
         {
-            return _eventService.GetThisMonthEventPreviews();
+            return _eventService.GetThisMonthEventPreviews(page, pageSize);
         }
 
         /// <summary>
         /// Returns list with events after this month
         /// </summary>
+        /// <param name="page">The page to count from when taking events from DB. Set to 1 for default.</param>
+        /// <param name="pageSize">The quantity of events to take from DB. Set to 6 for default.</param>
         [HttpGet("get-after-month-events")]
-        public List<EventPreviewDto> GetAfterMonthEvents()
+        public List<EventPreviewDto> GetAfterMonthEvents(int page = 1, int pageSize = 6)
         {
-            return _eventService.GetEventPreviewsAfterThisMonths();
+            return _eventService.GetEventPreviewsAfterThisMonths(page, pageSize);
         }
 
         /// <summary>

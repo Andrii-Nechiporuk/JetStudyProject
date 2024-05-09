@@ -70,15 +70,26 @@ namespace JetStudyProject.Infrastracture.Services
             else return new EventFullDto();
         }
 
-        public List<EventPreviewDto> GetEventsPreviews()
+        public int GetPagesQuantity(int pageSize)
         {
-            var events = _unitOfWork.EventRepository.GetListBySpec(new Events.WithUserAndEventAndLectorers());
+            var totalCount = _unitOfWork.EventRepository.GetAll().Count();
+            var totalPages = (int)Math.Ceiling((decimal)totalCount / pageSize);
+
+            return totalPages;
+        }
+
+        public List<EventPreviewDto> GetEventsPreviews(int page, int pageSize)
+        {
+            var events = _unitOfWork.EventRepository.GetListBySpec(new Events.WithUserAndEventAndLectorers(page, pageSize));
+            events = events
+                .Skip(((page - 1) * pageSize))
+                .Take(pageSize);
             return _mapper.Map<List<EventPreviewDto>>(events);
         }
 
-        public List<EventPreviewDto> GetSortedFilteredEventPreviews(string? searchString, string? dateFilter, int categoryId = 0, int eventTypeId = 0)
+        public List<EventPreviewDto> GetSortedFilteredEventPreviews(string? searchString, int page, int pageSize, string? dateFilter, int categoryId = 0, int eventTypeId = 0)
         {
-            var events = _unitOfWork.EventRepository.GetListBySpec(new Events.WithUserAndEventAndLectorers());
+            var events = _unitOfWork.EventRepository.GetListBySpec(new Events.WithUserAndEventAndLectorers(page, pageSize));
 
             if (searchString != null)
             {
@@ -113,25 +124,29 @@ namespace JetStudyProject.Infrastracture.Services
                 events = events.Where(p => p.EventTypeId == eventTypeId);
             }
 
+            events = events
+                .Skip(((page - 1) * pageSize))
+                .Take(pageSize);
+
             return _mapper.Map<List<EventPreviewDto>>(events);
         }
 
-        public List<EventPreviewDto> GetThisWeekEventPreviews()
+        public List<EventPreviewDto> GetThisWeekEventPreviews(int page, int pageSize)
         {
-            var events = _unitOfWork.EventRepository.GetListBySpec(new Events.WithUserAndEventAndLectorers());
+            var events = _unitOfWork.EventRepository.GetListBySpec(new Events.WithUserAndEventAndLectorers(page, pageSize));
 
             events = events.Where(p => p.StartDate <= DateTime.Now.AddDays(7) && p.StartDate >= DateTime.Now.Date);
-/*                    case "Months":
-                        events = events.Where(p => p.StartDate <= DateTime.Now.AddMonths(1) && p.StartDate >= DateTime.Now.Date);
-                    case "Year":
-                        events = events.Where(p => p.StartDate <= DateTime.Now.AddYears(1) && p.StartDate >= DateTime.Now.Date);*/
+
+            events = events
+                .Skip(((page - 1) * pageSize))
+                .Take(pageSize);
 
             return _mapper.Map<List<EventPreviewDto>>(events);
         }
 
-        public List<EventPreviewDto> GetThisMonthEventPreviews()
+        public List<EventPreviewDto> GetThisMonthEventPreviews(int page, int pageSize)
         {
-            var events = _unitOfWork.EventRepository.GetListBySpec(new Events.WithUserAndEventAndLectorers());
+            var events = _unitOfWork.EventRepository.GetListBySpec(new Events.WithUserAndEventAndLectorers(page, pageSize));
 
             var monthOfTheYear = DateTime.Now.Month;
             var year = DateTime.Now.Year;
@@ -139,23 +154,38 @@ namespace JetStudyProject.Infrastracture.Services
             events = events.Where(p => p.StartDate >= DateTime.Now.AddDays(7) &&
             p.StartDate <= DateTime.Now.AddDays(DateTime.DaysInMonth(year, monthOfTheYear) - DateTime.Now.Day));
 
+            events = events
+                .Skip(((page - 1) * pageSize))
+                .Take(pageSize);
+
             return _mapper.Map<List<EventPreviewDto>>(events);
         }
 
-        public List<EventPreviewDto> GetEventPreviewsAfterThisMonths()
+        public List<EventPreviewDto> GetEventPreviewsAfterThisMonths(int page, int pageSize)
         {
-            var events = _unitOfWork.EventRepository.GetListBySpec(new Events.WithUserAndEventAndLectorers());
+            var events = _unitOfWork.EventRepository.GetListBySpec(new Events.WithUserAndEventAndLectorers(page, pageSize));
 
             var monthOfTheYear = DateTime.Now.Month;
             var year = DateTime.Now.Year;
 
             events = events.Where(p => p.StartDate >= DateTime.Now.AddDays(DateTime.DaysInMonth(year, monthOfTheYear) - DateTime.Now.Day));
 
+            events = events
+                .Skip(((page - 1) * pageSize))
+                .Take(pageSize);
+
             return _mapper.Map<List<EventPreviewDto>>(events);
         }
         public async Task CreateEvent(EventCreateDto eventCreateDto, string userId)
         {
             var eventToCreate = _mapper.Map<Event>(eventCreateDto);
+
+            var user = await _userManager.FindByIdAsync(userId);
+
+            if (user == null)
+            {
+                throw new HttpException(ErrorMessages.InvalidUserId, HttpStatusCode.BadRequest);
+            }
 
             eventToCreate.CreatorId = userId;
             if (eventCreateDto.ImageFile != null)

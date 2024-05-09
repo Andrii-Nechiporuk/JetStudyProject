@@ -26,7 +26,7 @@ namespace JetStudyProject.Core.Specifications
         }
         public class WithUserAndEventAndLectorers : Specification<Event>
         {
-            public WithUserAndEventAndLectorers()
+            public WithUserAndEventAndLectorers(int page, int pageSize)
             {
                 Query
                     .Include(x => x.Creator)
