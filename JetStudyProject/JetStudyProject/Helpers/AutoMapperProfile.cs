@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using JetStudyProject.Core.Entities;
+using JetStudyProject.Infrastracture.DTOs.BasketDTOs;
 using JetStudyProject.Infrastracture.DTOs.CategoryDTOs;
 using JetStudyProject.Infrastracture.DTOs.EventDTOs;
 using JetStudyProject.Infrastracture.DTOs.EventTypeDTOs;
@@ -45,6 +46,16 @@ namespace JetStudyProject.Helpers
 
             CreateMap<EventType, EventTypeDto>();
             CreateMap<EventTypeDto, EventType>();
+
+            CreateMap<BasketItem, BasketItemDto>()
+                .ForMember(dest => dest.Title, from => from.MapFrom(x=> x.Event.Title))
+                .ForMember(dest => dest.Price, from => from.MapFrom(x => x.Event.Price))
+                .ForMember(dest => dest.ImageSrc, from => from.MapFrom(x => Path.Combine(_server.Features.Get<IServerAddressesFeature>().Addresses.FirstOrDefault(), WebConstants.eventsImagesPath, x.Event.Thumbnail)));
+            CreateMap<BasketItemDto, BasketItem>();
+
+            CreateMap<Basket, BasketDto>()
+                .ForMember(dest => dest.Items, from => from.MapFrom(x => x.BasketItems.ToList()));
+
         }
     }
 }
