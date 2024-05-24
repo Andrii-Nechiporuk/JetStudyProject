@@ -58,6 +58,7 @@ builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IEventTypeService, EventTypeService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IBasketService, BasketService>();
 builder.Services.AddTransient<IEmailSender, EmailSender>();
 
 builder.Services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();

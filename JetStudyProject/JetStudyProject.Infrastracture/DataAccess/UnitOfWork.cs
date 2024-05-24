@@ -88,6 +88,48 @@ namespace JetStudyProject.Infrastracture.DataAccess
             }
         }
 
+        public IGenericRepository<Basket> basketRepository;
+
+        public IGenericRepository<Basket> BasketRepository
+        {
+            get
+            {
+                if (this.basketRepository == null)
+                {
+                    this.basketRepository = new GenericRepository<Basket>(_ctx);
+                }
+                return basketRepository;
+            }
+        }
+
+        public IGenericRepository<BasketItem> basketItemRepository;
+
+        public IGenericRepository<BasketItem> BasketItemRepository
+        {
+            get
+            {
+                if (this.basketItemRepository == null)
+                {
+                    this.basketItemRepository = new GenericRepository<BasketItem>(_ctx);
+                }
+                return basketItemRepository;
+            }
+        }
+
+        public IGenericRepository<User> userRepository;
+
+        public IGenericRepository<User> UserRepository
+        {
+            get
+            {
+                if (this.userRepository == null)
+                {
+                    this.userRepository = new GenericRepository<User>(_ctx);
+                }
+                return userRepository;
+            }
+        }
+
         private bool disposed = false;
 
         protected virtual void Dispose(bool disposing)

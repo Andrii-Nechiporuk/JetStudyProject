@@ -15,6 +15,9 @@ namespace JetStudyProject.Infrastracture.DataAccess
         IGenericRepository<ListenCourse> ListenCourseRepository{ get; }
         IGenericRepository<Category> CategoryRepository { get; }
         IGenericRepository<EventType> EventTypeRepository { get; }
+        IGenericRepository<Basket> BasketRepository { get; }
+        IGenericRepository<BasketItem> BasketItemRepository { get; }
+        IGenericRepository<User> UserRepository { get; }
         Task SaveAsync();
     }
 }
