@@ -70,12 +70,12 @@ namespace JetStudyProject.Infrastracture.Services
             else return new EventFullDto();
         }
 
-        public int GetPagesQuantity(int pageSize)
+        public PagesCountDTO GetPagesQuantity(int pageSize)
         {
             var totalCount = _unitOfWork.EventRepository.GetAll().Count();
             var totalPages = (int)Math.Ceiling((decimal)totalCount / pageSize);
 
-            return totalPages;
+            return new PagesCountDTO { PagesCount = totalPages };
         }
 
         public List<EventPreviewDto> GetEventsPreviews(int page, int pageSize)

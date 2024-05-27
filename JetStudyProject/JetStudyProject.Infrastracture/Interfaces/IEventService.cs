@@ -11,7 +11,7 @@ namespace JetStudyProject.Infrastracture.Interfaces
     {
         List<EventPreviewDto> GetEventsPreviews(int page, int pageSize);
         Task<EventFullDto> GetEventAuthorized(int id, string userId);
-        int GetPagesQuantity(int pageSize);
+        PagesCountDTO GetPagesQuantity(int pageSize);
         Task<EventFullDto> GetEvent(int id);
         List<EventPreviewDto> GetSortedFilteredEventPreviews(string? searchString, int page, int pageSize, string? dateFilter, int categoryId, int eventTypeId);
         List<EventPreviewDto> GetThisWeekEventPreviews(int page, int pageSize);

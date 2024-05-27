@@ -41,7 +41,7 @@ namespace JetStudyProject.Controllers
         /// <param name="pageSize">The quantity of events to calculate pages quantity</param>
         /// <returns>Returns quantity of pages of events in DB</returns>
         [HttpGet("get-pages-quantity")]
-        public int GetPagesQuantity(int pageSize = 6)
+        public PagesCountDTO GetPagesQuantity(int pageSize = 6)
         {
             return _eventService.GetPagesQuantity(pageSize);
         }
