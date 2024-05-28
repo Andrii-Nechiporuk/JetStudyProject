@@ -23,7 +23,7 @@ namespace JetStudyProject.Infrastracture.DTOs.EventDTOs
         public string? TargetedAudience { get; set; }
         public int? SeatsAvailable { get; set; }
         public string? Location { get; set; }
-        public string? AdditionalRecources { get; set; }
+        public string? AdditionalResources { get; set; }
         public bool? IsOnline { get; set; }
         public UserDto? Creator { get; set; }
         public string? EventType { get; set; }
