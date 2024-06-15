@@ -3,20 +3,17 @@ using JetStudyProject;
 using JetStudyProject.Core.Entities;
 using JetStudyProject.Helpers;
 using JetStudyProject.Infrastracture.DataAccess;
-using JetStudyProject.Infrastracture.GenericRepository;
 using JetStudyProject.Infrastracture.Interfaces;
 using JetStudyProject.Infrastracture.Services;
 using JeyStudyProject.Infrastracture.Data;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Hosting.Server;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc.Routing;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.OpenApi.Models;
-using Swashbuckle.AspNetCore.Filters;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,13 +25,11 @@ builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("CORSPolicy", builder =>
-    {
-        builder
-        .AllowAnyMethod()
-        .AllowAnyHeader()
-        .WithOrigins("http://localhost:5173");
-    });
+    options.AddPolicy("AllowSpecificOrigin",
+           builder => builder.WithOrigins("https://localhost:3000")
+                              .AllowAnyHeader()
+                              .AllowAnyMethod()
+                              .AllowCredentials());
 });
 
 builder.Services.AddSwagger();
@@ -43,8 +38,17 @@ builder.Services.AddJwtAuthentication(builder.Configuration);
 builder.Services.AddDbContext<DataContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-builder.Services.AddAuthorization();
+//builder.Services.AddAuthorization();
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("Jwt_Or_Identity", policy =>
+    {
+        policy.AuthenticationSchemes.Add(IdentityConstants.ApplicationScheme);
+        policy.AuthenticationSchemes.Add(JwtBearerDefaults.AuthenticationScheme);
+        policy.RequireAuthenticatedUser();
 
+    });
+});
 builder.Services
     .AddAuthentication()
     .AddBearerToken();
@@ -62,7 +66,8 @@ builder.Services.AddScoped<IBasketService, BasketService>();
 builder.Services.AddTransient<IEmailSender, EmailSender>();
 
 builder.Services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
-builder.Services.AddScoped<IUrlHelper>(x => {
+builder.Services.AddScoped<IUrlHelper>(x =>
+{
     var actionContext = x.GetRequiredService<IActionContextAccessor>().ActionContext;
     var factory = x.GetRequiredService<IUrlHelperFactory>();
     return factory.GetUrlHelper(actionContext);
@@ -99,14 +104,14 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseCors("CORSPolicy");
+ app.UseHttpsRedirection();
+app.UseRouting();
 
-app.UseHttpsRedirection();
-
+app.UseCors("AllowSpecificOrigin");
 app.UseStaticFiles();
 
 app.UseMiddleware<ExceptionMiddleware>();
-
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

@@ -56,7 +56,7 @@ namespace JetStudyProject.Controllers
         public async Task<IActionResult> Logout()
         {
             await _authService.Logout();
-            return Ok();
+            return Ok(new { message = "Success" });
         }
 
         [HttpGet("confirm-email")]

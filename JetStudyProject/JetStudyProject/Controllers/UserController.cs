@@ -1,4 +1,5 @@
-﻿using JetStudyProject.Infrastracture.Interfaces;
+﻿using JetStudyProject.Infrastracture.DTOs.UserDTOs;
+using JetStudyProject.Infrastracture.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -44,10 +45,10 @@ namespace JetStudyProject.Controllers
         /// </summary>
         [HttpPut("change-name")]
         [Authorize]
-        public async Task<IActionResult> ChangeName(string name)
+        public async Task<IActionResult> ChangeName(ChangeNameDto changeNameDto)
         {
-            await _userService.ChangeName(User, name);
-            return Ok("Name changed successfully");
+            await _userService.ChangeName(User, changeNameDto.Name);
+            return Ok(new { message = "Name changed successfully." });
         }
 
         /// <summary>
@@ -55,10 +56,10 @@ namespace JetStudyProject.Controllers
         /// </summary>
         [HttpPut("change-surname")]
         [Authorize]
-        public async Task<IActionResult> ChangeSurname(string name)
-        {
-            await _userService.ChangeSurname(User, name);
-            return Ok("Surname changed successfully");
+        public async Task<IActionResult> ChangeSurname(ChangeNameDto changeNameDto)
+        {       
+            await _userService.ChangeSurname(User, changeNameDto.Name);
+            return Ok(new { message = "Surname changed successfully." });
         }
 
         /// <summary>

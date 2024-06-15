@@ -61,16 +61,16 @@ namespace JetStudyProject.Controllers
         /// <summary>
         /// Returns a list of events filtered based on the provided parameters
         /// </summary>
-        /// <param name="searchString">The string to search for in the post title</param>
+        /// <param name="search">The string to search for in the post title</param>
         /// <param name="dateFilter">The filter to apply to the post date. Valid values are "Week", "Month" and "Year"</param>
         /// <param name="categoryId">The field to sort the posts by categories. Set to 0 for default.</param>
         /// <param name="eventTypeId">The field to sort the posts by event types. Set to 0 for default.</param>
         /// <param name="page">The page to count from when taking events from DB. Set to 1 for default.</param>
         /// <param name="pageSize">The quantity of events to take from DB. Set to 6 for default.</param>
         [HttpGet("parameters")]
-        public List<EventPreviewDto> GetPreviewEventsWithFilter(string? searchString, string? dateFilter, int categoryId, int eventTypeId, int page = 1, int pageSize = 6)
+        public List<EventPreviewDto> GetPreviewEventsWithFilter(string? search, string? dateFilter, int categoryId, int eventTypeId, int page = 1, int pageSize = 6)
         {
-            return _eventService.GetSortedFilteredEventPreviews(searchString, page, pageSize, dateFilter, categoryId, eventTypeId);
+            return _eventService.GetSortedFilteredEventPreviews(search, page, pageSize, dateFilter, categoryId, eventTypeId);
         }
 
         /// <summary>
