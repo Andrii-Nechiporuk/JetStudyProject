@@ -1,4 +1,6 @@
-﻿using JetStudyProject.Infrastracture.DataAccess;
+﻿using JetStudyProject.Core.Entities.S3;
+using JetStudyProject.Helpers;
+using JetStudyProject.Infrastracture.DataAccess;
 using JetStudyProject.Infrastracture.DTOs.EmailDTOs;
 using JetStudyProject.Infrastracture.DTOs.EventDTOs;
 using JetStudyProject.Infrastracture.Interfaces;
@@ -15,10 +17,41 @@ namespace JetStudyProject.Controllers
     {
         private readonly IEventService _eventService;
         private readonly IUserService _userService;
-        public EventController(IEventService eventService, IUserService userService)
+        private readonly IStorageService _storageService;
+        private readonly IConfiguration _configuration;
+        public EventController(IEventService eventService, IUserService userService, IStorageService storageService, IConfiguration configuration)
         {
             _eventService = eventService;
             _userService = userService;
+            _storageService = storageService;
+            _configuration = configuration;
+        }
+
+        [HttpPost("upload-file")]
+        public async Task<IActionResult> UploadFile(IFormFile file)
+        {
+            // Process the file
+            await using var memoryStr = new MemoryStream();
+            await file.CopyToAsync(memoryStr);
+
+            var fileExt = Path.GetExtension(file.Name);
+            var objName = $"{Guid.NewGuid()}.{fileExt}";
+
+            var s3Obj = new S3Object()
+            {
+                BucketName = "jetstudyproj-ross-demo",
+                InputStream = memoryStr,
+                Name = objName
+            };
+
+            var cred = new AwsCredentials()
+            {
+                AwsKey = _configuration["AwsConfiguration:AWSAccessKey"],
+                AwsSecretKey = _configuration["AwsConfiguration:AWSSecretKey"]
+            };
+
+            var result = await _storageService.UploadFileAsync(s3Obj, cred);
+            return Ok(result);
         }
 
         [HttpGet("authorized/{id}")]
